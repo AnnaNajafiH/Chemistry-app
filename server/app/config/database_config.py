@@ -1,10 +1,9 @@
 """
 Database configuration module for handling connection settings and setup.
 """
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from dotenv import load_dotenv
 import os
 import re
