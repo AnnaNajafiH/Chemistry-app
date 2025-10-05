@@ -12,6 +12,7 @@ class FormulaHistory(Base):
     user_ip = Column(String(45), nullable=True)  # IPv6 addresses can be long
     boiling_point = Column(String(100), nullable=True)
     melting_point = Column(String(100), nullable=True)
+    flash_point = Column(String(100), nullable=True)
     density = Column(String(100), nullable=True)
     state_at_room_temp = Column(String(50), nullable=True)
     iupac_name = Column(String(255), nullable=True)
