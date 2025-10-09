@@ -11,11 +11,11 @@ from app.services.formula_history_service import FormulaHistoryService
 
 class FormulaController:
     def __init__(self):
-        self.formula_service = ChemistryService()    
+        self.formula_service = FormulaService()    
 
 
 
-    def calculate_formula(self, formula: str, request: Request, db: Session = Depends(get_db)) -> FormulaResponse:
+    def calculate_formula(self, formula: str, request: Request, db: Session) -> FormulaResponse:
         try:
             # Calculate molar mass
             molar_mass = self.formula_service.calculate_molar_mass(formula)
@@ -56,18 +56,18 @@ class FormulaController:
             raise HTTPException(status_code=500, detail=f"Calculation failed: {str(e)}")
 
     
-    def get_recent_formulas(self, db: Session = Depends(get_db)) -> List[FormulaHistoryModel]:
+    def get_recent_formulas(self, db: Session) -> List[FormulaHistoryModel]:
         try:
             formulas = FormulaHistoryService.get_recent_formulas(db)
-            return [FormulaHistoryModel.from_orm(formula) for formula in formulas]
+            return [FormulaHistoryModel.model_validate(formula) for formula in formulas]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Failed to fetch history: {str(e)}")
     
 
-    def get_formula_history(self, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)) -> List[FormulaHistoryModel]:
+    def get_formula_history(self, db: Session, skip: int = 0, limit: int = 10) -> List[FormulaHistoryModel]:
         try:
             formulas = FormulaHistoryService.get_formula_history(db, skip, limit)
-            return [FormulaHistoryModel.from_orm(formula) for formula in formulas]
+            return [FormulaHistoryModel.model_validate(formula) for formula in formulas]
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Failed to fetch history: {str(e)}")
     

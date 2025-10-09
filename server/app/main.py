@@ -39,6 +39,10 @@ async def read_root():
         "message": "Welcome to the chemistry API. Visit /docs for API documentation."
     }
 
+# Import and include the API routers
+from app.routes.formula_routes import router as formula_router
+app.include_router(formula_router)
+
 
 if __name__ == "__main__":
     import uvicorn

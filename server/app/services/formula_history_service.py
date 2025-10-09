@@ -2,7 +2,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from app.models.models import FormulaHistory
+from app.models.FormulaHistoryModel import FormulaHistory
 
 
 class FormulaHistoryService:
@@ -46,7 +46,7 @@ class FormulaHistoryService:
         db.refresh(db_formula)
         return db_formula
     
-    
+
     @staticmethod
     def get_recent_formulas(db: Session, limit: int = 10) -> List[FormulaHistory]:
         return db.query(FormulaHistory).order_by(FormulaHistory.timestamp.desc()).limit(limit).all()
