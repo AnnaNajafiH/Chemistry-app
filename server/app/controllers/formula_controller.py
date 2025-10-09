@@ -1,0 +1,84 @@
+from typing import Dict, Any, List
+from fastapi import Depends, HTTPException, Request
+from sqlalchemy.orm import Session
+
+from app.config.database_config import get_db
+from app.schemas.schemas import FormulaResponse, FormulaHistoryModel
+from app.services.formula_service import FormulaService
+from app.services.pubchem_service import PubChemService
+from app.services.formula_history_service import FormulaHistoryService
+
+
+class FormulaController:
+    def __init__(self):
+        self.formula_service = ChemistryService()    
+
+
+
+    def calculate_formula(self, formula: str, request: Request, db: Session = Depends(get_db)) -> FormulaResponse:
+        try:
+            # Calculate molar mass
+            molar_mass = self.formula_service.calculate_molar_mass(formula)
+            
+            # Try to get additional properties from PubChem
+            properties = PubChemService.get_chemical_properties(formula)
+            
+            # Get user IP if available
+            user_ip = self._get_client_ip(request)
+            
+            # Save the calculation to history
+            FormulaHistoryService.create_formula_entry(
+                db=db,
+                formula=formula,
+                molar_mass=molar_mass,
+                user_ip=user_ip,
+                properties=properties
+            )
+            
+            # Prepare response
+            response = {
+                "formula": formula,
+                "molar_mass": round(molar_mass, 6),  # Round to 6 decimal places for display
+                "unit": "g/mol"
+            }
+            
+            # Add additional properties if available
+            if properties:
+                for key, value in properties.items():
+                    if key not in response and value:  # Don't override existing keys
+                        response[key] = value
+            
+            return FormulaResponse(**response)
+            
+        except ValueError as ve:
+            raise HTTPException(status_code=400, detail=str(ve))
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Calculation failed: {str(e)}")
+
+    
+    def get_recent_formulas(self, db: Session = Depends(get_db)) -> List[FormulaHistoryModel]:
+        try:
+            formulas = FormulaHistoryService.get_recent_formulas(db)
+            return [FormulaHistoryModel.from_orm(formula) for formula in formulas]
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to fetch history: {str(e)}")
+    
+
+    def get_formula_history(self, skip: int = 0, limit: int = 10, db: Session = Depends(get_db)) -> List[FormulaHistoryModel]:
+        try:
+            formulas = FormulaHistoryService.get_formula_history(db, skip, limit)
+            return [FormulaHistoryModel.from_orm(formula) for formula in formulas]
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Failed to fetch history: {str(e)}")
+    
+
+    def _get_client_ip(self, request: Request) -> str:
+        # Check for X-Forwarded-For header first (common with proxies)
+        forwarded_for = request.headers.get("X-Forwarded-For")
+        if forwarded_for:
+            # The client IP is the first one in the list
+            return forwarded_for.split(",")[0].strip()
+        
+        # If no X-Forwarded-For, use the client host
+        client_host = request.client.host if request.client else None
+        return client_host or ""
