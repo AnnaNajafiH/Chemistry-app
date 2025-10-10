@@ -4,42 +4,40 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config.database_init import create_tables
 
-
 app = FastAPI(
-    title="chemistry API",
-    description="An API for chemistry calculations",
-    version="1.0.0",
-)
+    title="Chemistry App API", 
+    description="An API for Chemistry-related calculations and data retrieval",
+    version="1.0.0")
+
 
 @app.on_event("startup")
 async def startup_event():
-    print("Starting up the chemistry API...")
+    print("Starting up the Chemistry API...")
     create_tables()
-
+    
+    
 @app.on_event("shutdown")
 async def shutdown_event():
-    print("Shutting down the chemistry API...")
-
-
-
+    print("Shutting down the Chemistry API...")
+    
+    
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*"],    
     allow_headers=["*"],
 )
-
 
 
 @app.get("/", tags=["Health Check"])
 async def read_root():
     return {
-        "status": "ok", 
-        "message": "Welcome to the chemistry API. Visit /docs for API documentation."
-    }
+        "status": "success", 
+        "message":"Welcome to the chemistry API. Visit /docs for API documentation."}
+    
 
-# Import and include the API routers
+# Import and include routers  
 from app.routes.formula_routes import router as formula_router
 app.include_router(formula_router)
 

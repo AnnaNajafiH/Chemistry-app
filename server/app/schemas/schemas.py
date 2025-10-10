@@ -29,6 +29,7 @@ class FormulaHistoryModel(FormulaData):
     id: int
     timestamp: datetime
 
+    # allows creating model from an object, not just a dict
     model_config = {
         "from_attributes": True
     }

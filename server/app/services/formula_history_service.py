@@ -1,6 +1,5 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from datetime import datetime
 
 from app.models.FormulaHistoryModel import FormulaHistory
 
@@ -56,3 +55,34 @@ class FormulaHistoryService:
                         skip: int = 0, 
                         limit: int = 100) -> List[FormulaHistory]:
         return db.query(FormulaHistory).order_by(FormulaHistory.timestamp.desc()).offset(skip).limit(limit).all()
+    
+    @staticmethod
+    def update_formula_entry(db: Session, formula_id: int, updated_data: dict) -> FormulaHistory:
+        db_formula = db.query(FormulaHistory).filter(FormulaHistory.id == formula_id).first()
+        
+        if not db_formula:
+            return None
+            
+        # Update fields that are present in the request
+        for key, value in updated_data.items():
+            if hasattr(db_formula, key):
+                setattr(db_formula, key, value)
+                
+        db.commit()
+        db.refresh(db_formula)
+        return db_formula
+        
+    @staticmethod
+    def delete_formula_entry(db: Session, formula_id: int) -> bool:
+        db_formula = db.query(FormulaHistory).filter(FormulaHistory.id == formula_id).first()
+        
+        if not db_formula:
+            return False
+            
+        db.delete(db_formula)
+        db.commit()
+        return True
+        
+    @staticmethod
+    def get_formula_by_id(db: Session, formula_id: int) -> FormulaHistory:
+        return db.query(FormulaHistory).filter(FormulaHistory.id == formula_id).first()
