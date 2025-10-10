@@ -45,8 +45,8 @@ class PubChemService:
     @classmethod
     def _fetch_properties_by_cid(cls, cid: int) -> Dict[str, Any]:
         try:
-            # Request basic properties
-            props_url = f"{cls.BASE_URL}/compound/cid/{cid}/property/MolecularFormula,MolecularWeight,CanonicalSMILES,IsomericSMILES,IUPACName/JSON"
+            # Request basic properties - added more properties
+            props_url = f"{cls.BASE_URL}/compound/cid/{cid}/property/MolecularFormula,MolecularWeight,CanonicalSMILES,IsomericSMILES,IUPACName,XLogP,Complexity,HBondDonorCount,HBondAcceptorCount,RotatableBondCount,ExactMass,MonoisotopicMass,TPSA,HeavyAtomCount,AtomChiralCount,BondChiralCount/JSON"
             
             logger.info(f"Requesting properties for CID: {cid}")
             response = requests.get(props_url, timeout=10)
@@ -67,6 +67,8 @@ class PubChemService:
                 "formula": prop_data.get("MolecularFormula", ""),
                 "molar_mass": float(prop_data.get("MolecularWeight", 0)),
                 "iupac_name": prop_data.get("IUPACName", ""),
+                "smiles": prop_data.get("CanonicalSMILES", ""),
+                "structure_3d_url": f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{cid}/record/3d/JSON",
                 **physchem_props
             }
             
@@ -99,11 +101,56 @@ class PubChemService:
                         # Try to find hazard classification
                         if hierarchy.get("SourceName") == "GHS Classification" and hierarchy.get("Nodes"):
                             hazards = []
+                            hazard_statements = []
+                            precautionary_statements = []
+                            
                             for node in hierarchy["Nodes"]:
                                 if node.get("Information", {}).get("Name"):
                                     hazards.append(node["Information"]["Name"])
+                                    
+                                    # Look for detailed hazard statements
+                                    if "Description" in node.get("Information", {}):
+                                        if "H" in node["Information"]["Description"]:
+                                            hazard_statements.append(node["Information"]["Description"])
+                                        if "P" in node["Information"]["Description"]:
+                                            precautionary_statements.append(node["Information"]["Description"])
+                            
                             if hazards:
                                 properties["hazard_classification"] = ", ".join(hazards)
+                            if hazard_statements:
+                                properties["hazard_statements"] = "; ".join(hazard_statements)
+                            if precautionary_statements:
+                                properties["precautionary_statements"] = "; ".join(precautionary_statements)
+            
+            # Get synonyms
+            synonyms_url = f"{cls.BASE_URL}/compound/cid/{cid}/synonyms/JSON"
+            logger.info(f"Requesting synonyms for CID: {cid}")
+            response = requests.get(synonyms_url, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "InformationList" in data and "Information" in data["InformationList"]:
+                    info = data["InformationList"]["Information"][0]
+                    if "Synonym" in info:
+                        # Get the first 10 synonyms to avoid extremely long lists
+                        synonyms = info["Synonym"][:10]
+                        properties["synonyms"] = "; ".join(synonyms)
+                        if synonyms:
+                            properties["common_name"] = synonyms[0]  # Use first synonym as common name
+            
+            # Try to get crystal structure and description information
+            description_url = f"{cls.BASE_URL}/compound/cid/{cid}/description/JSON"
+            logger.info(f"Requesting description for CID: {cid}")
+            response = requests.get(description_url, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "InformationList" in data and "Information" in data["InformationList"]:
+                    for info in data["InformationList"]["Information"]:
+                        if "Description" in info:
+                            # Get the first description as the main description
+                            properties["description"] = info["Description"]
+                            break
             
             # Get more detailed properties from PubChem's Sections
             sections_url = f"{cls.BASE_URL}/compound/cid/{cid}/sections/JSON"
@@ -141,6 +188,10 @@ class PubChemService:
                                         properties["melting_point"] = value
                                     elif "density" in name and not properties.get("density"):
                                         properties["density"] = value
+                                    elif "flash point" in name and not properties.get("flash_point"):
+                                        properties["flash_point"] = value
+                                    elif "crystal" in name and not properties.get("crystal_structure"):
+                                        properties["crystal_structure"] = value
                 
         except Exception as e:
             logger.error(f"Error fetching physical properties for CID {cid}: {str(e)}")

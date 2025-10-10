@@ -21,6 +21,7 @@ class FormulaHistoryService:
         
         # Add additional properties if available
         if properties:
+            # Physical properties
             if "boiling_point" in properties:
                 db_formula.boiling_point = properties["boiling_point"]
             if "melting_point" in properties:
@@ -29,14 +30,40 @@ class FormulaHistoryService:
                 db_formula.density = properties["density"]
             if "state_at_room_temp" in properties:
                 db_formula.state_at_room_temp = properties["state_at_room_temp"]
+            if "flash_point" in properties:
+                db_formula.flash_point = properties["flash_point"]
+            
+            # Chemical identifiers
             if "iupac_name" in properties:
                 db_formula.iupac_name = properties["iupac_name"]
+            if "common_name" in properties:
+                db_formula.common_name = properties["common_name"]
+            if "synonyms" in properties:
+                db_formula.synonyms = properties["synonyms"]
+            if "smiles" in properties:
+                db_formula.smiles = properties["smiles"]
+            
+            # Hazard information
             if "hazard_classification" in properties:
                 db_formula.hazard_classification = properties["hazard_classification"]
+            if "hazard_statements" in properties:
+                db_formula.hazard_statements = properties["hazard_statements"]
+            if "precautionary_statements" in properties:
+                db_formula.precautionary_statements = properties["precautionary_statements"]
+            
+            # Structural information
             if "structure_image_url" in properties:
                 db_formula.structure_image_url = properties["structure_image_url"]
             if "structure_image_svg_url" in properties:
                 db_formula.structure_image_svg_url = properties["structure_image_svg_url"]
+            if "structure_3d_url" in properties:
+                db_formula.structure_3d_url = properties["structure_3d_url"]
+            if "crystal_structure" in properties:
+                db_formula.crystal_structure = properties["crystal_structure"]
+            
+            # Additional information
+            if "description" in properties:
+                db_formula.description = properties["description"]
             if "compound_url" in properties:
                 db_formula.compound_url = properties["compound_url"]
         

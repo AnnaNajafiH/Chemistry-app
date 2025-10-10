@@ -1,24 +1,28 @@
 import os
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config.database_init import create_tables
 
-app = FastAPI(
-    title="Chemistry App API", 
-    description="An API for Chemistry-related calculations and data retrieval",
-    version="1.0.0")
 
-
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
     print("Starting up the Chemistry API...")
     create_tables()
     
+    yield  # This is where FastAPI serves requests
     
-@app.on_event("shutdown")
-async def shutdown_event():
+    # Shutdown logic
     print("Shutting down the Chemistry API...")
+
+
+app = FastAPI(
+    title="Chemistry App API", 
+    description="An API for Chemistry-related calculations and data retrieval",
+    version="1.0.0",
+    lifespan=lifespan)
     
     
 app.add_middleware(
