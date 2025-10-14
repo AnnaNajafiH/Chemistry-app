@@ -1,0 +1,84 @@
+/* General layout styling */
+main {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Add smooth transitions */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+/* Chemistry-themed accents */
+.chemical-element {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 3px;
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chemical-element:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chemical-element .symbol {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.chemical-element .name {
+  font-size: 0.7rem;
+}
+
+.chemical-element .atomic-number {
+  font-size: 0.7rem;
+  position: relative;
+  top: -5px;
+  left: -5px;
+}
+
+/* Formula display styling */
+.formula-display {
+  font-family: 'Roboto Mono', monospace, system-ui;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  background-color: rgba(var(--bs-light-rgb), 0.5);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.formula-display sub {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+/* Card styling for formula results */
+.formula-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.formula-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
