@@ -1,19 +1,25 @@
 import { Outlet } from "react-router-dom";
-import { Header } from "./Header";
-import "./Layout.css";
+import Header from "./Header";
+import "./Layout.css"
 
-export const Layout = () => {
+
+function Layout() {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="container flex-grow-1 py-4">
+      <main className="flex-grow pt-16 px-7">
         <Outlet />
       </main>
-      <footer className="bg-light text-center py-3">
+      <footer className="flex justify-center text-center p-4 bg-blue-100 border-t mt-8">
         <div className="container">
-          <p className="mb-0">© 2025 Chemistry App</p>
+          <div className="mb-0 text-warning">
+            <span>&copy; {new Date().getFullYear()}</span> ChemIon. All rights
+            reserved.
+          </div>
         </div>
       </footer>
     </div>
   );
-};
+}
+
+export default Layout
