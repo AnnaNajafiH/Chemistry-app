@@ -45,6 +45,10 @@ log/
 .DS_Store
 .vs/
 
+# Node.js
+node_modules/
+
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
