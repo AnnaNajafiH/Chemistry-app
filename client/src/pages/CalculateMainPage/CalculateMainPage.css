@@ -1,0 +1,11 @@
+/* Calculator page styling */
+.calculator-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator-page > div:last-child {
+  flex: 1;
+  padding-bottom: 2rem;
+}

@@ -137,3 +137,18 @@ This application follows a modern client-server architecture:
    - JSON-based API for data exchange
    - Asynchronous requests for improved performance
    - Error handling on both client and server
+
+
+
+
+frontend:
+npm install tree
+npm install --save-dev @types/three
+npm install three @react-three/fiber @react-three/drei
+
+add this to tconfig.app.json :    
+"paths": {
+      "three/examples/jsm/*": ["./node_modules/@types/three/examples/jsm/*"]
+    },
+    add three to type
+

@@ -1,0 +1,84 @@
+.molecule-viewer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.molecule-controls{
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  gap: 1rem;
+  left: 13rem;
+  bottom: 5rem;
+}
+
+@media (max-width: 768px) {
+  .molecule-controls {
+    left: 40%;
+    bottom: 4rem;
+    transform: translateX(-50%);
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+  }
+}
+
+.molecule-scene-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+
+.molecule-viewer {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.molecule-controls-overlay {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  transition: opacity 0.2s ease;
+}
+
+.molecule-controls-overlay:hover {
+  opacity: 1;
+}
+
+.molecule-controls button {
+  transition: all 0.2s ease-in-out;
+}
+
+.molecule-controls button:hover {
+  transform: scale(1.05);
+}
+
+.molecule-controls input[type="range"] {
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+/* Dark mode styles */
+:root.dark .molecule-controls {
+  background-color: rgba(17, 24, 39, 0.8);
+}
+
+:root.dark .molecule-controls input[type="range"] {
+  accent-color: #60a5fa;
+}

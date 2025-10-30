@@ -4,7 +4,7 @@ import "./App.css";
 import {
   FormulaDetailPage,
   FormulaHistoryPage,
-  FormulaPage,
+  CalculatePage,
   HomePage,
   NotFoundPage,
 } from "./pages";
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="formula" element={<FormulaPage />} />
+          <Route path="formula" element={<CalculatePage />} />
           <Route path="formula/:id" element={<FormulaDetailPage />} />
           <Route path="history" element={<FormulaHistoryPage />} />
           <Route path="*" element={<NotFoundPage />} />

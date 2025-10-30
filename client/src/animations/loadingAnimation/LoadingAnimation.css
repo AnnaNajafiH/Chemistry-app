@@ -1,0 +1,151 @@
+
+.atom-bg-decoration {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cellipse cx='100' cy='100' rx='90' ry='30' fill='none' stroke='rgba(59, 130, 246, 0.2)' stroke-width='1' transform='rotate(0)'/%3E%3Cellipse cx='100' cy='100' rx='90' ry='30' fill='none' stroke='rgba(59, 130, 246, 0.2)' stroke-width='1' transform='rotate(60)'/%3E%3Cellipse cx='100' cy='100' rx='90' ry='30' fill='none' stroke='rgba(59, 130, 246, 0.2)' stroke-width='1' transform='rotate(120)'/%3E%3Ccircle cx='100' cy='100' r='10' fill='rgba(59, 130, 246, 0.3)'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: rotate-slow 20s linear infinite;
+}
+
+.molecule-bg-decoration {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Ccircle cx='60' cy='60' r='8' fill='rgba(99, 102, 241, 0.3)'/%3E%3Ccircle cx='140' cy='60' r='8' fill='rgba(99, 102, 241, 0.3)'/%3E%3Ccircle cx='100' cy='140' r='8' fill='rgba(99, 102, 241, 0.3)'/%3E%3Cline x1='60' y1='60' x2='140' y2='60' stroke='rgba(99, 102, 241, 0.2)' stroke-width='2'/%3E%3Cline x1='60' y1='60' x2='100' y2='140' stroke='rgba(99, 102, 241, 0.2)' stroke-width='2'/%3E%3Cline x1='140' y1='60' x2='100' y2='140' stroke='rgba(99, 102, 241, 0.2)' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: float-very-slow 15s ease-in-out infinite;
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-very-slow {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+/* Loading Animation */
+.loading-animation {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.bubble {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(59, 130, 246, 0.7);
+  animation: bubble-float 2s ease-in-out infinite;
+}
+
+.bubble:nth-child(1) {
+  left: 75px;
+  top: 20px;
+  animation-delay: 0s;
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+.bubble:nth-child(2) {
+  left: 90px;
+  top:30px;
+  animation-delay: 0.3s;
+  background-color: rgba(99, 102, 241, 0.7);
+}
+
+.bubble:nth-child(3) {
+  left: 65px;
+  top: 20px;
+  animation-delay: 0.6s;
+  background-color: rgba(79, 70, 229, 0.7);
+}
+
+.bubble:nth-child(4) {
+  left: 55px;
+  top: 0px;
+  animation-delay: 0.9s;
+  background-color: rgba(67, 56, 202, 0.7);
+}
+.bubble:nth-child(5) {
+  left: 79px;
+  top :-10px;
+  animation-delay: 0.9s;
+  background-color: rgba(104, 92, 244, 0.7);
+}
+.bubble:nth-child(6) {
+  left: 95px;
+  top: 5px;
+  animation-delay: 0.9s;
+  background-color: rgba(158, 151, 239, 0.7);
+}
+.bubble:nth-child(7) {
+  left: 53px;
+  top: 30px;
+  animation-delay: 0s;
+  background-color: rgba(59, 130, 246, 0.7);
+}
+
+@keyframes bubble-float {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2) translateY(-10px);
+    opacity: 0.7;
+  }
+}
+
+/* Erlenmeyer Flask Animation */
+.flask-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.flask {
+  position: absolute;
+  width: 200px;
+  height: 400px;
+  left: 10px;
+  top: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.liquid {
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  left: 40px;
+  bottom: 20px;
+  background-color: rgba(59, 130, 246, 0.4);
+  border-radius: 0 0 10px 10px;
+}
+
+@keyframes bubble {
+  0%, 100% {
+    transform: translateY(0);
+    background-color: rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    transform: translateY(-5px);
+    background-color: rgba(99, 102, 241, 0.6);
+  }
+}

@@ -1,12 +1,12 @@
 import  HomePage  from "./home/HomePage";
-import  FormulaPage  from "./formula/FormulaPage";
+import CalculatePage from "./CalculateMainPage/CalculateMainPage";
 import  FormulaHistoryPage  from "./history/FormulaHistoryPage";
-import  FormulaDetailPage  from "./formula/FormulaDetailPage";
+import  FormulaDetailPage  from "./formulaDetailPage/FormulaDetailPage";
 import  NotFoundPage  from "./NotFoundPage";
 
 export {
   HomePage,
-  FormulaPage,
+  CalculatePage,
   FormulaHistoryPage,
   FormulaDetailPage,
   NotFoundPage,

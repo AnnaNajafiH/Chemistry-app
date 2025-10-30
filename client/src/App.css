@@ -15,11 +15,32 @@
 }
 
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.btn{
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  width: 10rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+  cursor: pointer;
+  background-color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.btn-brand{
+  border: 2px solid #1E88E5;
+  color: #1E88E5
+}
+
+.btn-brand:hover{
+  background-color: #1E88E5;
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+@media(max-width: 768px){
+  .btn{
+    width: 80%;
   }
 }
